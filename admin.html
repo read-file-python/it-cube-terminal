@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Панель управления стендом</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  body { background: #0f172a; color: #fff; font-family: 'Exo 2', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+  .admin-panel { background: #1e293b; padding: 40px; border-radius: 16px; border: 2px solid #38bdf8; width: 600px; display: flex; flex-direction: column; gap: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+  .login-panel { background: #1e293b; padding: 40px; border-radius: 16px; border: 2px solid #38bdf8; width: 400px; display: flex; flex-direction: column; gap: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+  h2 { font-size: 28px; margin: 0 0 10px; font-weight: 900; }
+  label { font-size: 18px; display: flex; align-items: center; gap: 15px; cursor: pointer; }
+  input[type="checkbox"] { width: 24px; height: 24px; cursor: pointer; }
+  input[type="number"], input[type="password"] { padding: 14px 20px; font-size: 20px; border-radius: 8px; border: 2px solid rgba(37,99,199,0.5); background: #0f172a; color: #fff; font-family: 'Exo 2', sans-serif; outline: none; width: 100%; box-sizing: border-box; }
+  .btn-primary { background: #2563c7; color: #fff; font-size: 18px; font-weight: 700; padding: 16px; border: none; border-radius: 12px; cursor: pointer; text-align: center; transition: 0.2s; }
+  .btn-primary:hover { background: #3b82f6; transform: scale(1.02); }
+  .success-msg { color: #22c55e; font-weight: 700; text-align: center; font-size: 18px; display: none; }
+</style>
+</head>
+<body>
+
+<div class="login-panel" id="login-panel">
+  <h2 style="text-align: center;">Вход в систему</h2>
+  <input type="password" id="admin-password" placeholder="Введите PIN-код" style="text-align: center; letter-spacing: 0.2em;">
+  <button class="btn-primary" onclick="checkPassword()">Войти</button>
+  <div id="login-error" style="color: #f87171; font-weight: 700; text-align: center; display: none;">Неверный PIN-код!</div>
+</div>
+
+<div class="admin-panel" id="admin-panel" style="display: none;">
+  <h2>Настройки IT-КУБ</h2>
+  <label>
+    <input type="checkbox" id="admin-kiosk-toggle">
+    Стенд активен (снять для отключения)
+  </label>
+  <label>
+    <input type="checkbox" id="admin-enroll-toggle">
+    Включить запись на направления
+  </label>
+  <label>
+    <input type="checkbox" id="admin-kb-toggle">
+    Включить экранную клавиатуру
+  </label>
+  <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
+    <label style="font-size: 16px; color: rgba(255,255,255,0.7);">Таймер обновления страницы (в минутах):</label>
+    <input type="number" id="admin-timeout-input" min="1" max="60">
+  </div>
+  
+  <button class="btn-primary" onclick="saveSettings()">Сохранить настройки</button>
+  <div class="success-msg" id="success-msg">Настройки мгновенно применены! ✅</div>
+</div>
+
+<script>
+  // АВТОРИЗАЦИЯ
+  function checkPassword() {
+    const pass = document.getElementById('admin-password').value;
+    if (pass === '5863') {
+      document.getElementById('login-panel').style.display = 'none';
+      document.getElementById('admin-panel').style.display = 'flex';
+    } else {
+      document.getElementById('login-error').style.display = 'block';
+    }
+  }
+
+  // Вход по клавише Enter
+  document.getElementById('admin-password').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') checkPassword();
+  });
+
+  // Загружаем текущие настройки из памяти
+  document.getElementById('admin-kiosk-toggle').checked = localStorage.getItem('sys_kioskEnabled') !== 'false';
+  document.getElementById('admin-enroll-toggle').checked = localStorage.getItem('sys_enrollEnabled') !== 'false';
+  document.getElementById('admin-kb-toggle').checked = localStorage.getItem('sys_keyboardEnabled') !== 'false';
+  document.getElementById('admin-timeout-input').value = parseInt(localStorage.getItem('sys_idleTimeout')) || 5;
+
+  function saveSettings() {
+    localStorage.setItem('sys_kioskEnabled', document.getElementById('admin-kiosk-toggle').checked);
+    localStorage.setItem('sys_enrollEnabled', document.getElementById('admin-enroll-toggle').checked);
+    localStorage.setItem('sys_keyboardEnabled', document.getElementById('admin-kb-toggle').checked);
+    localStorage.setItem('sys_idleTimeout', parseInt(document.getElementById('admin-timeout-input').value) || 5);
+    
+    const msg = document.getElementById('success-msg');
+    msg.style.display = 'block';
+    setTimeout(() => msg.style.display = 'none', 3000);
+  }
+</script>
+</body>
+</html>

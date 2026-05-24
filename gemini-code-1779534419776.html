@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, initial-scale=1.0">
+<title>IT-КУБ Сатка — Информационный стенд</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+<style>
+:root {
+  --blue:       #2563c7;
+  --blue-light: #3b82f6;
+  --blue-pale:  #dbeafe;
+  --dark:       #0f172a;
+  --dark2:      #1e293b;
+  --gray:       #64748b;
+  --gray-light: #f1f5f9;
+  --border:     rgba(37,99,199,0.18);
+  --white:      #ffffff;
+  --accent:     #38bdf8;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  font-family: 'Exo 2', sans-serif;
+  background: var(--dark);
+  color: var(--white);
+  user-select: none;
+}
+
+.bg-grid {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgba(37,99,199,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37,99,199,0.07) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+.bg-glow {
+  position: fixed; pointer-events: none; z-index: 0;
+  border-radius: 50%; filter: blur(120px);
+}
+.bg-glow-1 { width:700px; height:700px; top:-200px; left:-100px; background: rgba(37,99,199,0.18); }
+.bg-glow-2 { width:500px; height:500px; bottom:-100px; right:200px; background: rgba(56,189,248,0.1); }
+
+.shell {
+  position: relative; z-index: 1;
+  width: 1920px; height: 1080px;
+  display: flex; flex-direction: column;
+}
+
+/* ─── HEADER ─── */
+header {
+  height: 96px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 60px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  background: rgba(15,23,42,0.75);
+  backdrop-filter: blur(12px);
+}
+
+.logo-wrap { display: flex; align-items: center; gap: 18px; }
+.logo-img { width: 72px; height: 72px; flex-shrink: 0; border-radius: 8px; object-fit: contain; background: transparent; }
+.logo-text-block { display: flex; flex-direction: column; }
+.logo-title {
+  font-size: 14px; font-weight: 800; line-height: 1.35;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.9);
+}
+.logo-sub {
+  font-size: 12px; font-weight: 400; color: var(--accent);
+  letter-spacing: 0.04em; margin-top: 2px;
+}
+
+.clock-wrap { display: flex; flex-direction: column; align-items: flex-end; }
+.clock {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 30px; font-weight: 600;
+  color: var(--accent); letter-spacing: 0.05em; line-height: 1;
+}
+.clock-date {
+  font-size: 13px; color: rgba(255,255,255,0.35);
+  font-family: 'JetBrains Mono', monospace; margin-top: 3px;
+}
+
+.tabs {
+  display: flex; align-items: center; gap: 6px;
+}
+.tab {
+  font-size: 16px; font-weight: 700;
+  padding: 11px 26px;
+  border: 2px solid rgba(255,255,255,0.12);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all .2s;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.02em;
+  background: transparent;
+}
+.tab:hover { border-color: var(--blue-light); color: var(--white); background: rgba(37,99,199,0.1); }
+.tab.active { border-color: var(--blue-light); background: rgba(37,99,199,0.22); color: var(--white); }
+.tab.tab-cta { border-color: var(--accent); color: var(--accent); background: rgba(56,189,248,0.08); font-weight: 900; }
+.tab.tab-cta:hover, .tab.tab-cta.active { background: rgba(56,189,248,0.2); color: #fff; border-color: var(--accent); }
+
+/* ─── CONTENT ─── */
+.content { flex: 1; overflow: hidden; position: relative; }
+
+.page {
+  position: absolute; inset: 0;
+  padding: 44px 60px;
+  display: none;
+  animation: pageIn 0.45s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+}
+.page.active { display: flex; }
+@keyframes pageIn { from { opacity: 0; transform: translateX(60px) scale(0.98); } to { opacity: 1; transform: translateX(0) scale(1); } }
+
+.page-title {
+  font-size: 13px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 28px; flex-shrink: 0;
+}
+
+/* ─── HOME ─── */
+#page-home { flex-direction: row; align-items: center; gap: 0; }
+
+.home-left { flex: 1; display: flex; flex-direction: column; gap: 28px; padding-right: 60px; }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(37,99,199,0.15);
+  border: 1px solid rgba(37,99,199,0.4);
+  color: var(--accent);
+  font-size: 13px; font-weight: 700;
+  padding: 7px 18px; border-radius: 100px;
+  width: fit-content; letter-spacing: 0.07em; text-transform: uppercase;
+}
+
+h1.hero-h { font-size: 62px; font-weight: 900; line-height: 1.1; letter-spacing: -0.025em; }
+h1.hero-h em { font-style: normal; color: var(--blue-light); }
+
+.hero-desc { font-size: 20px; line-height: 1.7; font-weight: 300; color: rgba(255,255,255,0.6); max-width: 600px; }
+
+.hero-actions { display: flex; gap: 18px; }
+
+.btn { font-family: 'Exo 2', sans-serif; font-size: 18px; font-weight: 800;
+  padding: 18px 48px; border-radius: 12px; cursor: pointer;
+  transition: all .2s; letter-spacing: 0.03em; display: inline-block; text-align: center; }
+.btn-primary { background: var(--blue); color: #fff; border: 2px solid var(--blue-light); }
+.btn-primary:hover, .btn-primary:active { background: var(--blue-light); transform: scale(1.03); box-shadow: 0 6px 28px rgba(37,99,199,.45); }
+.btn-outline { background: transparent; color: var(--white); border: 2px solid rgba(255,255,255,0.3); }
+.btn-outline:hover, .btn-outline:active { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,.7); transform: scale(1.03); }
+
+.stats-row { display: flex; gap: 40px; }
+.stat-item { display: flex; flex-direction: column; gap: 3px; }
+.stat-num { font-size: 40px; font-weight: 900; color: var(--blue-light); letter-spacing: -0.02em; line-height: 1; }
+.stat-label { font-size: 13px; color: rgba(255,255,255,0.4); font-weight: 400; }
+
+.home-right { width: 380px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.hero-img { width: 360px; height: 360px; object-fit: contain; animation: pulseLogo 3.5s ease-in-out infinite; }
+@keyframes pulseLogo {
+  0% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 20px rgba(56,189,248,0.2)); }
+  50% { transform: translateY(-8px) scale(1.02); filter: drop-shadow(0 0 50px rgba(56,189,248,0.6)); }
+  100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 20px rgba(56,189,248,0.2)); }
+}
+
+/* ─── ABOUT ─── */
+#page-about { flex-direction: column; }
+.about-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 52px; flex: 1; }
+.about-text { display: flex; flex-direction: column; gap: 16px; }
+.about-text h2 { font-size: 34px; font-weight: 900; color: var(--white); letter-spacing: -0.01em; }
+.about-text p { font-size: 18px; line-height: 1.75; color: rgba(255,255,255,0.58); font-weight: 300; }
+.about-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-content: start; }
+.fact-card {
+  border: 2px solid var(--border); border-radius: 14px;
+  padding: 20px; background: rgba(37,99,199,0.05);
+  transition: border-color .2s;
+}
+.fact-card:hover { border-color: var(--blue-light); }
+.fact-icon { font-size: 28px; margin-bottom: 8px; }
+.fact-title { font-size: 15px; font-weight: 700; color: var(--white); }
+.fact-desc { font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 3px; line-height: 1.4; }
+
+/* ─── DIRECTIONS (CABINETS) ─── */
+#page-directions { flex-direction: column; }
+.dir-main { display: flex; flex-direction: column; flex: 1; animation: pageIn 0.45s cubic-bezier(0.1, 0.9, 0.2, 1) forwards; }
+.dir-main.hidden { display: none; }
+.dir-sub { display: none; flex-direction: column; flex: 1; overflow-y: auto; }
+.dir-sub.active { display: flex; animation: pageIn 0.45s cubic-bezier(0.1, 0.9, 0.2, 1) forwards; }
+
+.dir-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; flex: 1; }
+.dir-card {
+  border: 2px solid var(--border); border-radius: 16px; padding: 26px 24px;
+  background: rgba(255,255,255,0.03); cursor: pointer; transition: all .22s;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.dir-card:hover, .dir-card:active { border-color: var(--blue-light); background: rgba(37,99,199,0.12); transform: scale(1.015); }
+.dir-age { font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; }
+.dir-card h3 { font-size: 20px; font-weight: 800; color: var(--white); line-height: 1.2; }
+.dir-card p { font-size: 14px; line-height: 1.6; color: rgba(255,255,255,0.5); flex: 1; }
+.dir-hours { font-size: 12px; color: var(--blue-light); font-weight: 600; margin-top: auto; padding-top: 8px; border-top: 1px solid var(--border); }
+
+/* Sub-page styles */
+.btn-back { 
+  display: inline-flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 700; 
+  color: var(--accent); cursor: pointer; margin-bottom: 25px; padding: 12px 24px; 
+  background: rgba(56,189,248,0.1); border-radius: 12px; width: fit-content; transition: .2s; text-transform: uppercase; letter-spacing: 0.05em;
+}
+.btn-back:hover { background: rgba(56,189,248,0.2); color: #fff; }
+.course-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; align-content: start; }
+.course-card { 
+  background: rgba(255,255,255,0.02); border: 2px solid var(--border); 
+  border-radius: 16px; padding: 26px; display: flex; flex-direction: column; gap: 12px;
+}
+.course-header { display: flex; justify-content: space-between; align-items: flex-start; }
+.course-type { font-size: 11px; font-weight: 800; padding: 6px 12px; border-radius: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+.course-type.budget { background: rgba(56,189,248,0.15); color: var(--accent); border: 1px solid rgba(56,189,248,0.3); }
+.course-type.paid { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+.course-card h4 { font-size: 24px; font-weight: 800; color: var(--white); line-height: 1.2; width: 75%; }
+.course-card p { font-size: 16px; color: rgba(255,255,255,0.6); line-height: 1.6; margin-bottom: 10px; }
+.course-meta { 
+  display: flex; gap: 20px; font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.5); 
+  margin-top: auto; padding-top: 18px; border-top: 1px solid var(--border); 
+}
+.course-meta span { display: flex; align-items: center; gap: 8px; }
+.course-meta span i { font-style: normal; font-size: 16px; }
+
+/* ─── TEACHERS ─── */
+#page-teachers { flex-direction: column; }
+.teacher-main { display: flex; flex-direction: column; flex: 1; animation: pageIn 0.45s cubic-bezier(0.1, 0.9, 0.2, 1) forwards; }
+.teacher-main.hidden { display: none; }
+.teacher-sub { display: none; flex-direction: column; flex: 1; overflow-y: auto; }
+.teacher-sub.active { display: flex; animation: pageIn 0.45s cubic-bezier(0.1, 0.9, 0.2, 1) forwards; }
+
+.teacher-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; flex: 1; align-content: start; }
+.teacher-card {
+  border: 2px solid var(--border); border-radius: 16px; overflow: hidden;
+  background: rgba(255,255,255,0.03); transition: all .22s; cursor: pointer;
+}
+.teacher-card:hover { border-color: var(--blue-light); transform: scale(1.015); background: rgba(37,99,199,0.08); }
+.teacher-ava {
+  height: 180px;
+  background-color: var(--dark2);
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat;
+  border-bottom: 1px solid var(--border);
+}
+.teacher-info { padding: 16px 20px; }
+.teacher-info h4 { font-size: 16px; font-weight: 800; color: var(--white); margin-bottom: 5px; line-height: 1.2; }
+.teacher-info .subject { font-size: 13px; color: var(--accent); font-weight: 600; }
+.teacher-info .bio { font-size: 12px; color: rgba(255,255,255,0.38); margin-top: 5px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* Teacher Sub-page specifics */
+.td-header { display: flex; align-items: center; gap: 30px; margin-bottom: 25px; }
+.td-ava-large { 
+  width: 120px; height: 120px; border-radius: 20px; 
+  background-color: var(--dark2); background-size: cover; background-position: top center; 
+  border: 2px solid var(--blue-light); flex-shrink: 0; 
+}
+.td-title h2 { font-size: 28px; font-weight: 900; color: var(--white); margin-bottom: 8px; }
+.td-subject { display: inline-flex; align-items: center; background: rgba(56,189,248,0.15); color: var(--accent); padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid rgba(56,189,248,0.3); }
+
+.td-body { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-content: start; }
+.td-block { background: rgba(255,255,255,0.02); border: 2px solid var(--border); border-radius: 16px; padding: 24px; }
+.td-block.full { grid-column: 1 / -1; }
+.td-block h3 { font-size: 14px; font-weight: 800; color: var(--blue-light); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+.td-block p, .td-block li { font-size: 15px; color: rgba(255,255,255,0.7); line-height: 1.6; }
+.td-block ul { padding-left: 20px; display: flex; flex-direction: column; gap: 10px; }
+.td-block li::marker { color: var(--accent); }
+
+.td-stats { grid-column: 1 / -1; display: flex; gap: 20px; }
+.td-stat { flex: 1; background: rgba(37,99,199,0.08); border: 2px solid var(--border); border-radius: 16px; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; }
+.td-stat span { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.05em; }
+.td-stat strong { font-size: 26px; font-weight: 900; color: var(--white); }
+
+/* ─── NEWS (VK) ─── */
+#page-news { flex-direction: column; }
+.news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; flex: 1; }
+.news-card {
+  border: 2px solid var(--border); border-radius: 16px; padding: 24px;
+  background: rgba(255,255,255,0.03); display: flex; flex-direction: column; gap: 10px; transition: all .22s;
+}
+.news-card:hover { border-color: var(--blue-light); background: rgba(37,99,199,0.08); }
+.news-date { font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: 0.07em; text-transform: uppercase; }
+.news-img { width: 100%; height: 160px; border-radius: 8px; background-size: cover; background-position: center; flex-shrink: 0; }
+.news-card p { font-size: 14px; line-height: 1.65; color: rgba(255,255,255,0.6); flex: 1; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; }
+
+/* ─── CONTACTS ─── */
+#page-contacts { flex-direction: column; }
+.contacts-wrap { display: flex; gap: 60px; flex: 1; align-items: center; }
+.contacts-info { flex: 1; display: flex; flex-direction: column; gap: 20px; justify-content: center; }
+.contact-item { 
+  display: flex; align-items: center; gap: 24px; background: rgba(255,255,255,0.02); 
+  padding: 24px 30px; border: 2px solid var(--border); border-radius: 16px; transition: .2s;
+}
+.contact-item:hover { border-color: var(--blue-light); background: rgba(37,99,199,0.08); }
+.contact-item i { font-style: normal; font-size: 36px; }
+.contact-item div h4 { font-size: 13px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+.contact-item div p { font-size: 20px; font-weight: 700; color: var(--white); }
+.contacts-qr { 
+  width: 480px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 25px; 
+  background: rgba(37,99,199,0.05); border-radius: 24px; border: 2px solid var(--border); padding: 50px 40px; text-align: center;
+}
+.qr-placeholder { 
+  width: 240px; height: 240px; background: #fff; border-radius: 16px; border: 4px solid var(--blue-light);
+  display: flex; align-items: center; justify-content: center; padding: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+/* ─── ENROLL ─── */
+#page-enroll { flex-direction: column; }
+.enroll-widget-wrap { flex: 1; border: 2px dashed var(--border); border-radius: 16px; background: rgba(255,255,255,0.02); display: flex; align-items: center; justify-content: center; margin-top: 20px; }
+
+/* ─── VIRTUAL KEYBOARD ─── */
+.keyboard-overlay {
+  position: fixed; bottom: -500px; left: 0; right: 0;
+  background: rgba(15,23,42,0.95); backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border); padding: 25px 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100005; display: flex; flex-direction: column; align-items: center; gap: 10px;
+  opacity: 0; visibility: hidden; pointer-events: none;
+}
+.keyboard-overlay.active { bottom: 0; opacity: 1; visibility: visible; pointer-events: auto; box-shadow: 0 -10px 50px rgba(0,0,0,0.5); }
+.kb-row { display: flex; gap: 8px; justify-content: center; width: 100%; }
+.kb-key {
+  background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.15);
+  border-radius: 12px; color: #fff; font-size: 32px; font-weight: 600;
+  min-width: 85px; height: 85px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: 0.1s; user-select: none; text-transform: uppercase;
+}
+.kb-key:active { background: var(--blue-light); transform: scale(0.95); border-color: var(--blue-light); }
+.kb-key.wide { min-width: 180px; font-size: 24px; }
+.kb-key.space { min-width: 600px; font-size: 24px; }
+.kb-key.dark { background: rgba(0,0,0,0.4); border-color: rgba(255,255,255,0.05); }
+.kb-close-btn { position: absolute; top: -45px; right: 40px; background: var(--blue); color: #fff; padding: 12px 24px; border-radius: 12px 12px 0 0; cursor: pointer; font-weight: 700; border: 2px solid var(--border); border-bottom: none; font-size: 16px; }
+
+/* ─── WINDOWS 8 METRO UI OVERRIDES (FIXED) ─── */
+* { border-radius: 0 !important; }
+.ripple { border-radius: 50% !important; }
+body, html { background: #181818; }
+.bg-grid, .bg-glow { display: none !important; }
+
+header { background: #202020; border-bottom: 1px solid #333; height: 80px; padding: 0 40px; }
+.footer-strip { background: #202020; border-top: 1px solid #333; }
+
+.dir-card, .teacher-card, .news-card, .fact-card, .course-card, .td-block, .td-stat, .contact-item { background: #2d2d30; border: 2px solid transparent; box-shadow: none; }
+.dir-card:hover, .teacher-card:hover, .news-card:hover, .contact-item:hover { background: #3e3e42; border-color: #0078d7; transform: scale(0.98); }
+
+.btn-primary { background: #0078d7; border: none; }
+.btn-primary:hover, .btn-primary:active { background: #005a9e; transform: scale(0.98); }
+.btn-outline { border: 2px solid #fff; background: transparent; }
+.btn-outline:hover, .btn-outline:active { background: #fff; color: #000; transform: scale(0.98); }
+
+.start-screen {
+  position: absolute; top: 80px; left: 0; right: 0; bottom: 0;
+  background: rgba(24, 24, 24, 0.98); backdrop-filter: blur(20px);
+  z-index: 999; display: none; padding: 60px 100px; overflow-y: auto; align-items: center; justify-content: center; flex-direction: column;
+}
+.start-screen.active { display: flex; animation: scaleIn 0.2s cubic-bezier(0.1, 0.9, 0.2, 1); }
+@keyframes scaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+.start-title { font-size: 48px; font-weight: 300; margin-bottom: 40px; color: #fff; align-self: flex-start; margin-left: auto; margin-right: auto; max-width: 1280px; width: 100%; }
+.tiles-grid { display: grid; grid-template-columns: repeat(6, 200px); grid-auto-rows: 200px; gap: 16px; justify-content: center; max-width: 1280px; width: 100%; }
+.metro-tile { color: #fff; padding: 20px; cursor: pointer; transition: transform 0.1s; display: flex; flex-direction: column; justify-content: flex-end; font-size: 22px; font-weight: 400; position: relative; user-select: none; }
+.metro-tile:active { transform: scale(0.95); }
+.metro-icon { position: absolute; top: 20px; left: 20px; font-size: 48px; }
+.tile-wide { grid-column: span 2; }
+
+/* ─── METRO TILE ANIMATIONS ─── */
+.start-screen.active .metro-tile { animation: tileFlyIn 0.6s cubic-bezier(0.1, 0.9, 0.2, 1) both; }
+@keyframes tileFlyIn { 0% { opacity: 0; transform: translateY(80px) scale(0.9); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+.start-screen.active .metro-tile:nth-child(1) { animation-delay: 0.05s; }
+.start-screen.active .metro-tile:nth-child(2) { animation-delay: 0.10s; }
+.start-screen.active .metro-tile:nth-child(3) { animation-delay: 0.15s; }
+.start-screen.active .metro-tile:nth-child(4) { animation-delay: 0.20s; }
+.start-screen.active .metro-tile:nth-child(5) { animation-delay: 0.25s; }
+.start-screen.active .metro-tile:nth-child(6) { animation-delay: 0.30s; }
+.start-screen.active .metro-tile:nth-child(7) { animation-delay: 0.35s; }
+
+/* ─── FOOTER ─── */
+.footer-strip {
+  height: 44px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border-top: 1px solid var(--border); gap: 52px;
+  background: rgba(15,23,42,0.7);
+}
+.footer-strip span {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; color: rgba(255,255,255,0.3);
+  font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em;
+}
+.footer-strip strong { color: rgba(255,255,255,0.65); }
+
+/* ─── TOUCH RIPPLE ─── */
+.ripple {
+  position: fixed; border-radius: 50%;
+  background: rgba(56,189,248,0.3);
+  transform: scale(0); animation: ripple-anim .4s ease-out forwards;
+  pointer-events: none; z-index: 9999;
+  width: 40px; height: 40px; margin: -20px;
+}
+@keyframes ripple-anim { to { transform: scale(2.5); opacity: 0; } }
+
+/* ─── PRELOADER ─── */
+#page-loader {
+  position: fixed; inset: 0; z-index: 100000;
+  background: var(--dark); display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+#page-loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; transform: scale(1.05); }
+.spinner {
+  width: 80px; height: 80px; border: 8px solid rgba(255,255,255,0.05);
+  border-top-color: var(--blue-light); border-radius: 50% !important;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<!-- PRELOADER -->
+<div id="page-loader">
+  <img src="https://dtkk.ru/wp-content/uploads/2020/11/it-logo.png" style="width: 140px; height: 140px; object-fit: contain; margin-bottom: 35px;" alt="IT-КУБ Сатка">
+  <div class="spinner"></div>
+  <div style="font-size: 18px; font-weight: 700; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 25px;">Загрузка системы...</div>
+</div>
+
+<div class="bg-grid"></div>
+<div class="bg-glow bg-glow-1"></div>
+<div class="bg-glow bg-glow-2"></div>
+
+<div class="shell">
+
+  <header>
+    <div class="logo-wrap">
+      <img src="https://dtkk.ru/wp-content/uploads/2020/11/it-logo.png" class="logo-img" alt="Логотип IT-КУБ">
+      <div class="logo-text-block">
+        <div class="logo-title">Центр цифрового образования детей «IT-КУБ»</div>
+        <div class="logo-sub">г. Сатка · Челябинская область</div>
+      </div>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 30px;">
+      <div class="clock-wrap" style="align-items: flex-end;">
+        <div class="clock" id="clock">00:00</div>
+        <div class="clock-date" id="clock-date"></div>
+      </div>
+      <div style="display: flex; gap: 15px;">
+        <div class="btn btn-outline" style="border-radius: 12px; padding: 14px 28px; font-size: 18px; display: flex; align-items: center; gap: 10px; border-color: rgba(255,255,255,0.2);" onclick="toggleStartMenu()">
+          <i class="fi fi-rr-apps" style="font-size: 22px;"></i> Меню
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- СТАРТОВОЕ МЕНЮ (WINDOWS 8) -->
+    <div class="start-screen" id="start-screen">
+      <div class="start-title">Меню навигации</div>
+      <div class="tiles-grid">
+        <div class="metro-tile tile-wide" style="background: #0078d7;" onclick="showPage('home')"><div class="metro-icon"><i class="fi fi-rr-home"></i></div>Главная</div>
+        <div class="metro-tile" style="background: #00aba9;" onclick="showPage('about')"><div class="metro-icon"><i class="fi fi-rr-info"></i></div>Об организации</div>
+        <div class="metro-tile tile-wide" style="background: #00a300;" onclick="showPage('directions')"><div class="metro-icon"><i class="fi fi-rr-building"></i></div>Направления</div>
+        <div class="metro-tile" style="background: #da532c;" onclick="showPage('teachers')"><div class="metro-icon"><i class="fi fi-rr-users-alt"></i></div>Педагоги</div>
+        <div class="metro-tile" style="background: #2b5797;" onclick="showPage('news')"><div class="metro-icon"><i class="fi fi-rr-megaphone"></i></div>Новости (VK)</div>
+        <div class="metro-tile" style="background: #9f00a7;" onclick="showPage('contacts')"><div class="metro-icon"><i class="fi fi-rr-phone-call"></i></div>Контакты</div>
+        <div class="metro-tile tile-wide" style="background: #ee1111;" onclick="showPage('enroll')"><div class="metro-icon"><i class="fi fi-rr-user-add"></i></div>Записаться</div>
+      </div>
+    </div>
+
+    <div class="page active" id="page-home">
+      <div class="home-left">
+        <div class="badge">🎓 Нацпроект «Образование» · Бесплатно</div>
+        <h1 class="hero-h">IT-КУБ <em>Сатка</em> —<br>твой старт в цифровое<br>будущее</h1>
+        <p class="hero-desc">Центр цифрового образования детей для школьников 5–11 классов. Программирование, робототехника, VR/AR, дизайн и алгоритмика — всё бесплатно на современном оборудовании.</p>
+        <div class="hero-actions">
+          <div class="btn btn-primary" onclick="showPage('enroll')">Записаться на курс</div>
+          <div class="btn btn-outline" onclick="toggleStartMenu()"><i class="fi fi-rr-apps" style="margin-right: 8px;"></i> Навигация</div>
+        </div>
+        <div class="stats-row">
+          <div class="stat-item"><div class="stat-num">400+</div><div class="stat-label">Учеников в год</div></div>
+          <div class="stat-item"><div class="stat-num">6</div><div class="stat-label">Направлений</div></div>
+          <div class="stat-item"><div class="stat-num">72-144 ч</div><div class="stat-label">Каждый курс</div></div>
+          <div class="stat-item"><div class="stat-num">Бюджет/Платно</div><div class="stat-label">Формы обучения</div></div>
+        </div>
+      </div>
+      <div class="home-right">
+        <img src="https://dtkk.ru/wp-content/uploads/2020/11/it-logo.png" class="hero-img" alt="IT-КУБ Сатка">
+      </div>
+    </div>
+
+    <div class="page" id="page-about">
+      <div class="page-title">Об организации</div>
+      <div class="about-grid">
+        <div class="about-text">
+          <h2>ЦЦОД «IT-КУБ» г. Сатка</h2>
+          <p>Центр цифрового образования детей «IT-КУБ» г. Сатка — филиал ГБУ ДО «ДЮТТ» Челябинской области. Работает в рамках национального проекта «Образование» с 2021 года.</p>
+          <p>Занятия проходят на высокотехнологичном оборудовании по адресу <strong style="color:rgba(255,255,255,.85)">ул. Солнечная, д. 32</strong>. С детьми работают квалифицированные педагоги — практикующие IT-специалисты.</p>
+          <p>Шесть граней куба символизируют основные направления IT-образования. Ежегодно в центре обучаются более 400 детей и подростков на бюджетной и платной основах.</p>
+          <div class="btn btn-primary" style="font-size:16px;padding:14px 32px;width:fit-content;margin-top:10px;" onclick="showPage('directions')">Просмотр направлений →</div>
+        </div>
+        <div class="about-facts">
+          <div class="fact-card"><div class="fact-icon"><i class="fi fi-rr-computer"></i></div><div class="fact-title">Современное оборудование</div><div class="fact-desc">Высокотехнологичные ПК, VR-гарнитуры, Arduino, роботы</div></div>
+          <div class="fact-card"><div class="fact-icon"><i class="fi fi-rr-graduation-cap"></i></div><div class="fact-title">Педагоги из IT-сферы</div><div class="fact-desc">Постоянное профессиональное развитие</div></div>
+          <div class="fact-card"><div class="fact-icon"><i class="fi fi-rr-trophy"></i></div><div class="fact-title">Победители олимпиад</div><div class="fact-desc">Постоянное участие во множестве мероприятий</div></div>
+          <div class="fact-card"><div class="fact-icon"><i class="fi fi-rr-building"></i></div><div class="fact-title">Бюджет и Платные</div><div class="fact-desc">Широкий выбор программ от 6 до 18 лет</div></div>
+          <div class="fact-card"><div class="fact-icon"><i class="fi fi-rr-calendar"></i></div><div class="fact-title">Удобный график</div><div class="fact-desc">Курсы по 72 и 144 часа в год</div></div>
+          <div class="fact-card"><div class="fact-icon"><i class="fi fi-rr-rocket"></i></div><div class="fact-title">С 2021 года</div><div class="fact-desc">Открыт в рамках нацпроекта «Образование»</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="page-directions">
+      <div class="page-title">Направления обучения 2025-2026 (Кликните на направление для просмотра курсов)</div>
+      
+      <div class="dir-main" id="dir-main">
+        <div class="dir-grid">
+          <div class="dir-card" onclick="openCabinet('python')">
+            <div class="dir-age">от 12 до 18 лет</div>
+            <h3>Направление «Программирование на Python»</h3>
+            <p><strong>Бюджет:</strong> Python: основы и практика.<br><strong>Платно:</strong> Создание сайтов.</p>
+            <div class="dir-hours">Педагог: Мальцев А.А.</div>
+          </div>
+          <div class="dir-card" onclick="openCabinet('mobile')">
+            <div class="dir-age">от 10 до 17 лет</div>
+            <h3>Направление «Мобильная разработка»</h3>
+            <p><strong>Бюджет:</strong> Мобильные игры и приложения, Kotlin для Android, Графический дизайн.</p>
+            <div class="dir-hours">Педагог: Гайнанов М.В.</div>
+          </div>
+          <div class="dir-card" onclick="openCabinet('sysadmin')">
+            <div class="dir-age">от 12 до 18 лет</div>
+            <h3>Направление «Системное администрирование»</h3>
+            <p><strong>Бюджет:</strong> Системное администрирование, Разработка и администрирование баз данных.</p>
+            <div class="dir-hours">Педагоги: Гайнанов М.В., Шевалдин Д.К.</div>
+          </div>
+          <div class="dir-card" onclick="openCabinet('vr')">
+            <div class="dir-age">от 11 до 18 лет</div>
+            <h3>Направление «Разработка VR/AR»</h3>
+            <p><strong>Бюджет:</strong> Разработка VR/AR приложений, Основы 3D-моделирования (Blender), Arduino, Нейросети и Big Data.</p>
+            <div class="dir-hours">Педагоги: Шевалдин Д.К., Гордеев И.К.</div>
+          </div>
+          <div class="dir-card" onclick="openCabinet('robo')">
+            <div class="dir-age">от 6 до 14 лет</div>
+            <h3>Направление «Робототехника»</h3>
+            <p><strong>Бюджет:</strong> РобоСтарт, Робототехника на R:ED X.<br><strong>Платно:</strong> Роботёнок, Роботёнок-продвинутый.</p>
+            <div class="dir-hours">Педагоги: Побережная Л.Р., Гордеева А.Д.</div>
+          </div>
+          <div class="dir-card" onclick="openCabinet('algo')">
+            <div class="dir-age">от 7 до 13 лет</div>
+            <h3>Направление «Основы алгоритмики и логики»</h3>
+            <p><strong>Бюджет:</strong> Блочное программирование, Создание миров в Roblox.<br><strong>Платно:</strong> Основы алгоритмики и логики.</p>
+            <div class="dir-hours">Педагог: Андрюкова А.П.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dir-sub" id="dir-sub">
+        <div class="btn-back" onclick="closeCabinet()">← Назад к направлениям</div>
+        <h2 id="cabinet-title" style="margin-bottom:25px; font-size:32px; font-weight:900;">Название направления</h2>
+        <div class="course-grid" id="course-grid">
+          </div>
+      </div>
+    </div>
+
+    <div class="page" id="page-teachers">
+      <div class="page-title">Педагогический состав 2025-2026 (Кликните на карточку для просмотра информации)</div>
+      
+      <div class="teacher-main" id="teacher-main">
+        <div class="teacher-grid">
+          <div class="teacher-card" onclick="openTeacher('andryukova')">
+            <div class="teacher-ava" style="background-image: url('https://robo74.ru//assets/cache_image/assets/upload/teachers/andrukova_306x306_252.jpg');"></div>
+            <div class="teacher-info">
+              <h4>Андрюкова Анастасия Павловна</h4>
+              <div class="subject">Алгоритмика, Roblox</div>
+              <div class="bio">Основы алгоритмики и логики, основы блочного программирования, Создание миров в Roblox.</div>
+            </div>
+          </div>
+          <div class="teacher-card" onclick="openTeacher('gainanov')">
+            <div class="teacher-ava" style="background-image: url('https://robo74.ru//assets/cache_image/assets/upload/teachers/gainanov_306x306_252.jpg');"></div>
+            <div class="teacher-info">
+              <h4>Гайнанов Максим Вячеславович</h4>
+              <div class="subject">Мобайл, Сисадмин, Дизайн</div>
+              <div class="bio">Разработка мобильных игр и Kotlin Android, Системное администрирование, Графический дизайн.</div>
+            </div>
+          </div>
+          <div class="teacher-card" onclick="openTeacher('gordeev')">
+            <div class="teacher-ava" style="background-image: url('https://robo74.ru//assets/cache_image/assets/upload/teachers/gordeev_306x306_252.jpg');"></div>
+            <div class="teacher-info">
+              <h4>Гордеев Иван Константинович</h4>
+              <div class="subject">VR/AR, Arduino, Нейросети</div>
+              <div class="bio">VR/AR, Arduino, Введение в нейросети и обработку больших данных.</div>
+            </div>
+          </div>
+          <div class="teacher-card" onclick="openTeacher('gordeeva')">
+            <div class="teacher-ava" style="background-image: url('https://robo74.ru//assets/cache_image/assets/upload/teachers/gordeeva_306x306_252.jpg');"></div>
+            <div class="teacher-info">
+              <h4>Гордеева Анастасия Дмитриевна</h4>
+              <div class="subject">Робототехника</div>
+              <div class="bio">Робототехника на конструкторе R:ED X.</div>
+            </div>
+          </div>
+          <div class="teacher-card" onclick="openTeacher('maltsev')">
+            <div class="teacher-ava" style="background-image: url('https://robo74.ru//assets/cache_image/assets/upload/teachers/maltsev_306x306_252.jpg');"></div>
+            <div class="teacher-info">
+              <h4>Мальцев Алексей Александрович</h4>
+              <div class="subject">Python, Веб</div>
+              <div class="bio">Python: основы и практика с нуля, Создание сайтов.</div>
+            </div>
+          </div>
+          <div class="teacher-card" onclick="openTeacher('poberezhnaya')">
+            <div class="teacher-ava" style="background-image: url('https://robo74.ru//assets/cache_image/assets/upload/teachers/poberezhaya_306x306_252.jpg');"></div>
+            <div class="teacher-info">
+              <h4>Побережная Лариса Рифовна</h4>
+              <div class="subject">Робототехника</div>
+              <div class="bio">РобоСтарт, Робототехника на конструкторе R:ED X, Роботёнок, Роботёнок-продвинутый.</div>
+            </div>
+          </div>
+          <div class="teacher-card" onclick="openTeacher('shevaldin')">
+            <div class="teacher-ava" style="background-image: url('https://robo74.ru//assets/cache_image/assets/upload/teachers/schevaldin_306x306_252.jpg');"></div>
+            <div class="teacher-info">
+              <h4>Шевалдин Данил Константинович</h4>
+              <div class="subject">VR/AR, 3D, Базы данных</div>
+              <div class="bio">Создание VR/AR, Основы 3D-моделирования (Blender 3D), Базы данных.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="teacher-sub" id="teacher-sub">
+        <div class="btn-back" onclick="closeTeacher()">← Назад к списку</div>
+        
+        <div class="td-header">
+          <div class="td-ava-large" id="td-ava"></div>
+          <div class="td-title">
+            <h2 id="td-name">Имя Педагога</h2>
+            <div class="td-subject" id="td-subject">Направление</div>
+          </div>
+        </div>
+        
+        <div class="td-body">
+          <div class="td-block full">
+            <h3>Преподаваемые дисциплины</h3>
+            <p id="td-disc">Дисциплины</p>
+          </div>
+          <div class="td-block">
+            <h3>Образование</h3>
+            <p id="td-edu">Данные об образовании</p>
+          </div>
+          <div class="td-block">
+            <h3>Повышение квалификации</h3>
+            <ul id="td-courses">
+              </ul>
+          </div>
+          <div class="td-stats">
+            <div class="td-stat">
+              <span>Профессиональный стаж:</span>
+              <strong id="td-exp-prof">0 лет</strong>
+            </div>
+            <div class="td-stat">
+              <span>Общий стаж работы:</span>
+              <strong id="td-exp-total">0 лет</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="page" id="page-news">
+      <div class="page-title">Лента ВКонтакте (@it_cube_satka)</div>
+      <!-- Встроенный виджет ВКонтакте (не требует ключей) -->
+      <div id="vk_groups" style="width: 100%; max-width: 1600px; margin: 0 auto; flex: 1; border: 2px solid var(--border); border-radius: 16px; overflow: hidden; background: #0f172a;"></div>
+    </div>
+
+    <div class="page" id="page-contacts">
+      <div class="page-title">Контактная информация</div>
+      <div class="contacts-wrap">
+        <div class="contacts-info">
+           <div class="contact-item"><i class="fi fi-rr-marker"></i><div><h4>Адрес</h4><p>г. Сатка, ул. Солнечная, д. 32</p></div></div>
+           <div class="contact-item"><i class="fi fi-rr-phone-call"></i><div><h4>Телефон</h4><p>+7 (35161) 5-95-75</p></div></div>
+           <div class="contact-item"><i class="fi fi-rr-smartphone"></i><div><h4>ВКонтакте</h4><p>vk.com/it_cube_satka</p></div></div>
+           <div class="contact-item"><i class="fi fi-rr-envelope"></i><div><h4>Email</h4><p>welcome@it-cub-satka.ru</p></div></div>
+           <div class="contact-item"><i class="fi fi-rr-clock"></i><div><h4>Режим работы</h4><p>Пн–Вс, занятия по расписанию</p></div></div>
+        </div>
+        <div class="contacts-qr">
+           <h3 style="font-size:26px; font-weight:800; color:var(--white);">Мы ВКонтакте</h3>
+           <p style="font-size:16px; color:rgba(255,255,255,0.6); line-height:1.5;">Наведите камеру телефона,<br>чтобы подписаться на нашу группу<br>и следить за новостями!</p>
+           <div class="qr-placeholder">
+             <img src="https://iili.io/CHvUIQR.jpg" style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px;" alt="QR">
+           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ENROLL -->
+    <div class="page" id="page-enroll">
+      <div class="page-title">Запись на обучение</div>
+      <!-- АКТИВНОЕ СОСТОЯНИЕ -->
+      <div id="enroll-active" style="display: flex; flex-direction: column; flex: 1;">
+        <h2 style="font-size: 34px; font-weight: 900; margin-bottom: 12px; color: var(--white);">Запись через платформу «Мой класс»</h2>
+        <p style="font-size: 18px; color: rgba(255,255,255,0.6);">Здесь будет встроен виджет для онлайн-записи на направления IT-КУБ. (Ожидаются данные для встраивания)</p>
+        
+        <!-- ТЕСТОВОЕ ПОЛЕ ВВОДА ДЛЯ КЛАВИАТУРЫ -->
+        <div style="margin-top:20px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 16px;">
+          <label style="display:block; margin-bottom: 8px; color: var(--accent); font-weight: 700; font-size: 14px; text-transform: uppercase;">Тест встроенной клавиатуры:</label>
+          <input type="text" placeholder="Тапните сюда для ввода текста..." style="width: 100%; max-width: 500px; padding: 16px 20px; font-size: 20px; border-radius: 12px; border: 2px solid var(--border); background: var(--dark); color: #fff; outline: none; font-family: 'Exo 2', sans-serif;">
+        </div>
+
+        <div class="enroll-widget-wrap">
+          <!-- Сюда добавим код виджета "Мой класс", когда он будет готов -->
+          <span style="color: rgba(255,255,255,0.3); font-size: 20px; font-weight: 600;">Место для виджета записи</span>
+        </div>
+      </div>
+      <!-- ОТКЛЮЧЕННОЕ СОСТОЯНИЕ -->
+      <div id="enroll-disabled" style="display: none; flex-direction: column; flex: 1; align-items: center; justify-content: center; text-align: center;">
+        <div style="font-size: 80px; margin-bottom: 20px; color: #ef4444;"><i class="fi fi-rr-lock"></i></div>
+        <h2 style="font-size: 32px; font-weight: 900; color: var(--white); margin-bottom: 15px; max-width: 800px; line-height: 1.3;">На текущий момент подача заявок на направления приостановлена.</h2>
+        <p style="font-size: 20px; color: rgba(255,255,255,0.6); max-width: 700px; line-height: 1.5;">Пожалуйста, повторите попытку позднее или обратитесь к Диспетчеру.</p>
+      </div>
+    </div>
+
+  </div><div class="footer-strip">
+    <span><i class="fi fi-rr-marker"></i> <strong>г. Сатка, ул. Солнечная, д. 32</strong></span>
+    <span><i class="fi fi-rr-phone-call"></i> <strong>+7 (35161) 5-95-75</strong></span>
+    <span><i class="fi fi-rr-globe"></i> <strong>it-cub-satka.ru</strong></span>
+    <span><i class="fi fi-rr-envelope"></i> <strong>welcome@it-cub-satka.ru</strong></span>
+    <span><i class="fi fi-rr-smartphone"></i> ВКонтакте: <strong>@it_cube_satka</strong></span>
+    <span><i class="fi fi-rr-clock"></i> Пн–Вс, занятия по расписанию</span>
+  </div>
+
+</div><!-- /shell (Закрываем основную оболочку стенда здесь) -->
+
+<!-- ЭКРАН ОТКЛЮЧЕННОГО СТЕНДА -->
+<div id="kiosk-disabled-overlay">
+  <div style="font-size: 100px; margin-bottom: 20px; color: #ef4444;"><i class="fi fi-rr-lock"></i></div>
+  <h2 style="font-size: 46px; font-weight: 900; color: var(--white); margin-bottom: 20px; max-width: 1000px; line-height: 1.2;">Информационный стенд временно не работает.</h2>
+  <p style="font-size: 24px; color: rgba(255,255,255,0.6); max-width: 900px; line-height: 1.5;">Мы об этом уже в курсе, и работаем над этим.</p>
+  <div class="disabled-contacts">
+    <div style="display: flex; flex-direction: column; gap: 20px; flex: 1;">
+       <div class="dc-item"><i class="fi fi-rr-marker"></i> г. Сатка, ул. Солнечная, д. 32</div>
+       <div class="dc-item"><i class="fi fi-rr-phone-call"></i> +7 (35161) 5-95-75</div>
+       <div class="dc-item"><i class="fi fi-rr-smartphone"></i> vk.com/it_cube_satka</div>
+       <div class="dc-item"><i class="fi fi-rr-envelope"></i> welcome@it-cub-satka.ru</div>
+    </div>
+    <div style="width: 200px; height: 200px; background: #fff; border-radius: 16px; padding: 15px; border: 4px solid var(--blue-light);">
+      <img src="https://iili.io/CHvUIQR.jpg" style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px;" alt="QR">
+    </div>
+  </div>
+</div>
+
+<script>
+// CLOCK
+function updateClock() {
+  const now = new Date();
+  const days = ['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
+  const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  document.getElementById('clock').textContent =
+    now.getHours().toString().padStart(2,'0') + ':' +
+    now.getMinutes().toString().padStart(2,'0');
+  document.getElementById('clock-date').textContent =
+    days[now.getDay()] + ', ' + now.getDate() + ' ' + months[now.getMonth()];
+}
+updateClock(); setInterval(updateClock, 1000);
+
+// NAVIGATION
+function toggleStartMenu() {
+  document.getElementById('start-screen').classList.toggle('active');
+}
+
+let vkInitialized = false;
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  
+  const startMenu = document.getElementById('start-screen');
+  if (startMenu) startMenu.classList.remove('active');
+  
+  if (id !== 'directions') closeCabinet();
+  if (id !== 'teachers') closeTeacher();
+  
+  if (id === 'news' && !vkInitialized) {
+    vkInitialized = true;
+    const vkScript = document.createElement('script');
+    vkScript.src = 'https://vk.com/js/api/openapi.js?169';
+    vkScript.onload = () => {
+      VK.Widgets.Group("vk_groups", {
+        mode: 4, wide: 1, width: "auto", height: "850",
+        color1: '0F172A', color2: 'FFFFFF', color3: '38BDF8'
+      }, 201750127);
+    };
+    document.head.appendChild(vkScript);
+  }
+}
+
+// CABINETS DATA
+const cabinetsData = {
+  python: {
+    title: 'Направление «Программирование на Python»',
+    courses: [
+      { name: 'Python: основы и практика', type: 'Бюджет', age: '12-15 лет', hours: '72 ч', teacher: 'Мальцев А.А.', desc: 'Изучение синтаксиса и алгоритмики языка Python с нуля. Создание первых текстовых программ, работа со структурами данных и логическими операторами.' },
+      { name: 'Создание сайтов', type: 'Платно', age: '12-18 лет', hours: '72 ч', teacher: 'Мальцев А.А.', desc: 'Освоение технологий веб-разработки (HTML, CSS, базовый JavaScript). Проектирование, верстка и публикация собственных веб-страниц.' }
+    ]
+  },
+  mobile: {
+    title: 'Направление «Мобильная разработка»',
+    courses: [
+      { name: 'Мобильные игры и приложения', type: 'Бюджет', age: '10-13 лет', hours: '144 ч', teacher: 'Гайнанов М.В.', desc: 'Разработка первых мобильных игр и несложных программ. Изучение базовых концепций мобильных интерфейсов и логики.' },
+      { name: 'Разработка на Kotlin для Android', type: 'Бюджет', age: '14-17 лет', hours: '144 ч', teacher: 'Гайнанов М.В.', desc: 'Профессиональная разработка мобильных приложений для Android на современном языке Kotlin. Создание проектов для реальных задач.' },
+      { name: 'Графический дизайн', type: 'Бюджет', age: '14-17 лет', hours: '144 ч', teacher: 'Гайнанов М.В.', desc: 'Работа в профессиональных графических редакторах, создание макетов, логотипов, пользовательских интерфейсов (UI/UX) и фирменного стиля.' }
+    ]
+  },
+  sysadmin: {
+    title: 'Направление «Системное администрирование»',
+    courses: [
+      { name: 'Системное администрирование', type: 'Бюджет', age: '12-15 лет', hours: '72 ч', teacher: 'Гайнанов М.В.', desc: 'Изучение устройства ПК, сборка и разборка компонентов, настройка операционных систем, работа с локальными сетями и основами кибербезопасности.' },
+      { name: 'Разработка и администрирование БД', type: 'Бюджет', age: '14-17 лет', hours: '144 ч', teacher: 'Шевалдин Д.К.', desc: 'Проектирование и создание баз данных, написание запросов, обеспечение безопасности и отказоустойчивости систем хранения информации.' }
+    ]
+  },
+  vr: {
+    title: 'Направление «Разработка VR/AR»',
+    courses: [
+      { name: 'Разработка VR/AR приложений', type: 'Бюджет', age: '11-18 лет', hours: '144 ч', teacher: 'Гордеев И.К.', desc: 'Проектирование сред виртуальной и дополненной реальности. Работа с игровыми движками, программирование интерактивных сцен.' },
+      { name: 'Основы 3D-моделирования в Blender', type: 'Бюджет', age: '11-14 лет', hours: '144 ч', teacher: 'Шевалдин Д.К.', desc: 'Создание трехмерных объектов, персонажей и локаций, текстурирование и рендеринг в профессиональном пакете Blender 3D.' },
+      { name: 'Arduino', type: 'Бюджет', age: '12-17 лет', hours: '144 ч', teacher: 'Гордеев И.К.', desc: 'Сборка и программирование электронных устройств на базе контроллеров Arduino, пайка, работа с сенсорами и сервоприводами.' },
+      { name: 'Введение в нейросети и Big Data', type: 'Бюджет', age: '14-17 лет', hours: '144 ч', teacher: 'Гордеев И.К.', desc: 'Основы машинного обучения, алгоритмы искусственного интеллекта и практическая работа по обработке и анализу больших массивов данных.' }
+    ]
+  },
+  robo: {
+    title: 'Направление «Робототехника»',
+    courses: [
+      { name: 'РобоСтарт', type: 'Бюджет', age: '9-11 лет', hours: '144 ч', teacher: 'Побережная Л.Р.', desc: 'Знакомство с основами робототехники, конструирование базовых механизмов, программирование движений и реакции на датчики.' },
+      { name: 'Робототехника на R:ED X', type: 'Бюджет', age: '9-14 лет', hours: '144 ч', teacher: 'Побережная Л.Р., Гордеева А.Д.', desc: 'Сборка и программирование соревновательных и инженерных моделей роботов с использованием отечественного конструктора R:ED X.' },
+      { name: 'Роботёнок', type: 'Платно', age: '6-9 лет', hours: '72 ч', teacher: 'Побережная Л.Р.', desc: 'Увлекательное погружение в мир инженерии для самых маленьких. Развитие мелкой моторики, логики и пространственного мышления.' },
+      { name: 'Роботёнок-продвинутый', type: 'Платно', age: '7-10 лет', hours: '72 ч', teacher: 'Побережная Л.Р.', desc: 'Углубленное изучение механизмов (шестеренки, рычаги, моторы) и создание более сложных роботизированных конструкций.' }
+    ]
+  },
+  algo: {
+    title: 'Направление «Основы алгоритмики и логики»',
+    courses: [
+      { name: 'Основы блочного программирования', type: 'Бюджет', age: '9-13 лет', hours: '72 ч', teacher: 'Андрюкова А.П.', desc: 'Первые шаги в программировании с помощью визуальных блоков. Создание собственных интерактивных мультфильмов и простых 2D-игр.' },
+      { name: 'Создание миров в Roblox', type: 'Бюджет', age: '10-14 лет', hours: '72 ч', teacher: 'Андрюкова А.П.', desc: 'Разработка собственных игр и локаций на популярной платформе Roblox Studio, знакомство с основами скриптинга и геймдизайна.' },
+      { name: 'Основы алгоритмики и логики', type: 'Платно', age: '7-11 лет', hours: '72 ч', teacher: 'Андрюкова А.П.', desc: 'Развитие вычислительного и логического мышления, решение алгоритмических головоломок в увлекательной игровой форме.' }
+    ]
+  }
+};
+
+function openCabinet(id) {
+  const data = cabinetsData[id];
+  if (!data) return;
+
+  document.getElementById('dir-main').classList.add('hidden');
+  document.getElementById('dir-sub').classList.add('active');
+  document.getElementById('cabinet-title').textContent = data.title;
+  
+  const grid = document.getElementById('course-grid');
+  grid.innerHTML = '';
+  data.courses.forEach(course => {
+    const typeClass = course.type.toLowerCase() === 'платно' ? 'paid' : 'budget';
+    grid.innerHTML += `
+      <div class="course-card">
+        <div class="course-header">
+          <h4>${course.name}</h4><div class="course-type ${typeClass}">${course.type}</div>
+        </div>
+        <p>${course.desc}</p>
+        <div class="course-meta">
+          <span><i class="fi fi-rr-user"></i> ${course.age}</span><span><i class="fi fi-rr-clock"></i> ${course.hours} в год</span><span><i class="fi fi-rr-graduation-cap"></i> ${course.teacher}</span>
+        </div>
+      </div>
+    `;
+  });
+}
+
+function closeCabinet() {
+  document.getElementById('dir-sub').classList.remove('active');
+  document.getElementById('dir-main').classList.remove('hidden');
+}
+
+
+// TEACHERS DATA
+const teachersData = {
+  andryukova: {
+    name: "Андрюкова Анастасия Павловна", imgUrl: "https://robo74.ru//assets/cache_image/assets/upload/teachers/andrukova_306x306_252.jpg", subject: "Алгоритмика, Roblox",
+    disciplines: "Основы алгоритмики и логики (7-11 лет), Основы блочного программирования (9-13 лет), Создание игровых миров в среде Roblox (10-13 лет).",
+    education: "Неоконченное средне-профессиональное образование.",
+    expProf: "1 год", expTotal: "1 год",
+    courses: ["В настоящее время проходит обучение или данные отсутствуют."]
+  },
+  gainanov: {
+    name: "Гайнанов Максим Вячеславович", imgUrl: "https://robo74.ru//assets/cache_image/assets/upload/teachers/gainanov_306x306_252.jpg", subject: "Мобайл, Сисадмин, Дизайн",
+    disciplines: "Основы создания мобильных приложений (9-11 лет), Разработка мобильных игр и приложений (10-13 лет), Разработка на языке Kotlin для платформы Android (14-17 лет), Графический дизайн (14-17 лет), Основы компьютерной грамотности (9-11 лет), Системное администрирование (12-15 лет).",
+    education: "Среднее профессиональное, ГБПОУ «Саткинский горно-керамический колледж», Программирование в компьютерных системах (2021).",
+    expProf: "5 лет", expTotal: "5 лет",
+    courses: [
+      "«Новые возможности и эффективные решения использования нейросетей в работе педагога» (On-skills, 2026)", 
+      "«Актуальные вопросы проектирования и осуществления образовательного процесса в условиях реализации ФГОС СОО» (Луч знаний, 2023)",
+      "Профессиональная переподготовка: «Педагогика и методика дополнительного образования» (ЧИППКРО, 2022)"
+    ]
+  },
+  gordeev: {
+    name: "Гордеев Иван Константинович", imgUrl: "https://robo74.ru//assets/cache_image/assets/upload/teachers/gordeev_306x306_252.jpg", subject: "VR/AR, Arduino, Нейросети",
+    disciplines: "Введение в нейросети и обработку больших данных (14-17 лет), Компас (12-17 лет).",
+    education: "Высшее (магистр), ФГАОУ ВО «Южно-Уральский государственный университет», Информационные системы и технологии (2023).",
+    expProf: "5 лет", expTotal: "5 лет",
+    courses: [
+      "«Как стать наставником проектов» (Академия наставников, 2025)",
+      "«Методика преподавания курса Искусственный интеллект: компьютерное зрение» (2025)",
+      "«Актуальные вопросы проектирования и осуществления образовательного процесса в условиях реализации ФГОС СОО» (Луч знаний, 2023)",
+      "Курс подготовки к работе в автоматизированной системе трехмерного моделирования КОМПАС-3Д (2023)"
+    ]
+  },
+  gordeeva: {
+    name: "Гордеева Анастасия Дмитриевна", imgUrl: "https://robo74.ru//assets/cache_image/assets/upload/teachers/gordeeva_306x306_252.jpg", subject: "Робототехника",
+    disciplines: "Робототехника на конструкторе R:ED X (9-14 лет).",
+    education: "Высшее (магистр), ФГАОУ ВО «Южно-Уральский государственный университет», Электроэнергетика и электротехника (2024).",
+    expProf: "3 года", expTotal: "4 года",
+    courses: [
+      "«Основы образовательной робототехники и программирования» (ПГГПУ, 2026)",
+      "«Использование современного учебного оборудования при реализации ДОП технической направленности в центрах IT-куб» (2023)"
+    ]
+  },
+  maltsev: {
+    name: "Мальцев Алексей Александрович", imgUrl: "https://robo74.ru//assets/cache_image/assets/upload/teachers/maltsev_306x306_252.jpg", subject: "Python, Веб",
+    disciplines: "Создание сайтов (12-18 лет), Python: основы и практика с нуля (12-15 лет), Python: от основ до практики (14-17 лет), Python: от простых задач к серьезным проектам (14-17 лет), Python: Строим проекты с нуля (12-17 лет).",
+    education: "Средне-техническое, ГОУ ВПО «Южно-Уральский государственный университет», Программное обеспечение ВТ и АС (2010).",
+    expProf: "5 лет", expTotal: "16 лет",
+    courses: [
+      "«Углубленное программирование на Python для учителей» (Яндекс, 2025)", 
+      "Профессиональная переподготовка: «Python-разработчик» (Яндекс, 2024)", 
+      "«Искусственный интеллект для учителей» (МФТИ, 2023)", 
+      "«Методика обучения детей по направлению Веб-разработка» (ФЦДО, 2023)",
+      "Профессиональная переподготовка: «Педагогика и методика дополнительного образования» (ЧИППКРО, 2022)"
+    ]
+  },
+  poberezhnaya: {
+    name: "Побережная Лариса Рифовна", imgUrl: "https://robo74.ru//assets/cache_image/assets/upload/teachers/poberezhaya_306x306_252.jpg", subject: "Робототехника",
+    disciplines: "Роботёнок (6-9 лет), Программирование в Minecraft (7-11 лет), Роботёнок-продвинутый (6-9 лет), РобоСтарт (9-11 лет), РобоСтарт-продвинутый (11-17 лет), Робототехника (11-14 лет), Работотехника для самых маленьких (6-9 лет), Создание игровых миров в среде Roblox (10-13 лет).",
+    education: "Высшее (бакалавр), ФГОУ ВО ЮУрГГПУ (г. Челябинск), Специальное (дефектологическое) образование (2019).",
+    expProf: "5 лет", expTotal: "19 лет",
+    courses: [
+      "«Использования инструментов искусственного интеллекта в педагогической практике» (Яндекс, 2026)", 
+      "«Основы робототехники» (Университет Иннополис, 2024)", 
+      "«Формирование гибких компетенций у обучающихся: вводный уровень» (ФЦДО, 2023)"
+    ]
+  },
+  shevaldin: {
+    name: "Шевалдин Данил Константинович", imgUrl: "https://robo74.ru//assets/cache_image/assets/upload/teachers/schevaldin_306x306_252.jpg", subject: "VR/AR, 3D, Базы данных",
+    disciplines: "Создание VR/AR-приложений с использованием Unity 3D (12-17 лет), Компас (12-17 лет), Основы 3Д-моделирования в Blender 3D (11-14 лет), Разработка и администрирование баз данных (14-17 лет), Основы компьютерной грамотности (9-11 лет).",
+    education: "Среднее профессиональное, ГБПОУ «Саткинский горно-керамический колледж», Информационные системы и программирование (2025).",
+    expProf: "2 года", expTotal: "2 года",
+    courses: ["«Как стать наставником проектов» (Академия наставников, 2025)"]
+  }
+};
+
+function openTeacher(id) {
+  const data = teachersData[id];
+  if (!data) return;
+  document.getElementById('teacher-main').classList.add('hidden');
+  document.getElementById('teacher-sub').classList.add('active');
+  
+  document.getElementById('td-ava').style.backgroundImage = `url('${data.imgUrl}')`;
+  document.getElementById('td-name').textContent = data.name;
+  document.getElementById('td-subject').textContent = data.subject;
+  document.getElementById('td-disc').textContent = data.disciplines;
+  document.getElementById('td-edu').textContent = data.education;
+  document.getElementById('td-exp-prof').textContent = data.expProf;
+  document.getElementById('td-exp-total').textContent = data.expTotal;
+  
+  const coursesList = document.getElementById('td-courses');
+  coursesList.innerHTML = '';
+  data.courses.forEach(c => {
+    coursesList.innerHTML += `<li>${c}</li>`;
+  });
+}
+
+function closeTeacher() {
+  document.getElementById('teacher-sub').classList.remove('active');
+  document.getElementById('teacher-main').classList.remove('hidden');
+}
+
+// RIPPLE EFFECT
+document.addEventListener('click', e => {
+  const el = document.createElement('div');
+  el.className = 'ripple';
+  el.style.left = e.clientX + 'px';
+  el.style.top  = e.clientY + 'px';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 600);
+});
+
+// VIRTUAL KEYBOARD
+const kbContainer = document.createElement('div');
+kbContainer.className = 'keyboard-overlay';
+kbContainer.innerHTML = `
+  <div class="kb-close-btn" onclick="closeKeyboard()">Скрыть клавиатуру ↓</div>
+  <div id="kb-keys" class="kb-keys-container"></div>
+`;
+document.body.appendChild(kbContainer);
+
+let currentInput = null;
+let isRu = true;
+let isShift = false;
+
+const kbLayouts = {
+  ru: [
+    ['1','2','3','4','5','6','7','8','9','0','-','_','+','='],
+    ['й','ц','у','к','е','н','г','ш','щ','з','х','ъ','(',')'],
+    ['ф','ы','в','а','п','р','о','л','д','ж','э','@','?'],
+    ['Shift','я','ч','с','м','и','т','ь','б','ю','.',',','Backspace'],
+    ['EN', 'Space', 'Enter']
+  ],
+  en: [
+    ['1','2','3','4','5','6','7','8','9','0','-','_','+','='],
+    ['q','w','e','r','t','y','u','i','o','p','[',']','(',')'],
+    ['a','s','d','f','g','h','j','k','l',';','\'','@','?'],
+    ['Shift','z','x','c','v','b','n','m',',','.','Backspace'],
+    ['RU', 'Space', 'Enter']
+  ]
+};
+
+function renderKeyboard() {
+  const keys = kbLayouts[isRu ? 'ru' : 'en'];
+  const html = keys.map(row => {
+    return `<div class="kb-row">` + row.map(key => {
+      let classes = 'kb-key';
+      let display = isShift && key.length === 1 ? key.toUpperCase() : key.toLowerCase();
+      
+      if (key === 'Space') { classes += ' space dark'; display = 'Пробел'; }
+      else if (key === 'Backspace') { classes += ' wide dark'; display = '⌫ Стереть'; }
+      else if (key === 'Enter') { classes += ' wide dark'; display = 'Ввод'; }
+      else if (key === 'Shift') { classes += ' wide dark'; display = isShift ? '⇧ SHIFT (ВКЛ)' : '⇧ Shift'; }
+      else if (key === 'EN' || key === 'RU') { classes += ' wide dark'; display = key; }
+      else if (key.length === 1) { /* regular key */ }
+      
+      return `<div class="${classes}" data-key="${key}">${display}</div>`;
+    }).join('') + `</div>`;
+  }).join('');
+  
+  document.getElementById('kb-keys').innerHTML = html;
+}
+
+let lastKeyTime = 0;
+function processKey(e) {
+  let btn = e.target;
+  while (btn && btn !== document.getElementById('kb-keys') && (!btn.classList || !btn.classList.contains('kb-key'))) { btn = btn.parentNode; }
+  if (!btn || !btn.dataset || !btn.dataset.key) return;
+  
+  e.preventDefault(); // Защищает поле от потери фокуса на 100%
+  e.stopPropagation(); // Останавливает всплытие события, чтобы клава не закрывалась!
+  const now = Date.now();
+  if (now - lastKeyTime < 50) return; // Защита от дублей тачскрина
+  lastKeyTime = now;
+  
+  btn.classList.add('pressed');
+  setTimeout(() => btn.classList.remove('pressed'), 100);
+  handleKey(btn.dataset.key);
+}
+const kbKeysEl = document.getElementById('kb-keys');
+kbKeysEl.addEventListener('touchstart', processKey, { passive: false });
+kbKeysEl.addEventListener('mousedown', processKey);
+
+function handleKey(key) {
+  if (!currentInput) return;
+  
+  if (key === 'EN') { isRu = false; renderKeyboard(); return; }
+  if (key === 'RU') { isRu = true; renderKeyboard(); return; }
+  if (key === 'Shift') { isShift = !isShift; renderKeyboard(); return; }
+  
+  if (key === 'Backspace') {
+    currentInput.value = currentInput.value.slice(0, -1);
+  } else if (key === 'Space') {
+    currentInput.value += ' ';
+  } else if (key === 'Enter') {
+    closeKeyboard();
+  } else {
+    currentInput.value += isShift ? key.toUpperCase() : key.toLowerCase();
+  }
+  
+  // Безопасный вызов события для старых браузеров стендов
+  try {
+    currentInput.dispatchEvent(new Event('input', { bubbles: true }));
+  } catch (err) {
+    let evt = document.createEvent('Event');
+    evt.initEvent('input', true, true);
+    currentInput.dispatchEvent(evt);
+  }
+}
+
+function closeKeyboard() { kbContainer.classList.remove('active'); }
+
+const handleKbOpen = e => {
+  const isAdminInput = e.target.id === 'admin-password' || e.target.id === 'admin-timeout-input';
+  if (!sysSettings.keyboardEnabled && !isAdminInput) return;
+  
+  const validTypes = ['text', 'tel', 'email', 'password', 'number'];
+  if (e.target.tagName === 'INPUT' && validTypes.indexOf(e.target.type) !== -1) {
+    currentInput = e.target;
+    kbContainer.classList.add('active');
+  }
+};
+document.addEventListener('focusin', handleKbOpen);
+document.addEventListener('click', handleKbOpen);
+document.addEventListener('touchstart', handleKbOpen, { passive: true });
+
+renderKeyboard(); // Инициализация
+
+// ЗАКРЫТИЕ ПО КЛИКУ В ПУСТУЮ ОБЛАСТЬ
+const handleOutsideClick = e => {
+  const target = e.target;
+  
+  // Если элемент уже удален из DOM (например, при перерисовке), игнорируем клик
+  if (!document.body.contains(target)) return;
+
+  if (kbContainer.classList.contains('active')) {
+    if (!target.closest('.keyboard-overlay') && target.tagName !== 'INPUT') {
+      closeKeyboard();
+    }
+  }
+  const startMenu = document.getElementById('start-screen');
+  if (startMenu && startMenu.classList.contains('active')) {
+    if (!target.closest('.metro-tile') && !target.closest('.btn-outline')) {
+      startMenu.classList.remove('active');
+    }
+  }
+};
+document.addEventListener('mousedown', handleOutsideClick);
+document.addEventListener('touchstart', handleOutsideClick, {passive: true});
+
+// НАСТРОЙКИ СИСТЕМЫ И АДМИН-МЕНЮ
+let sysSettings = {
+  kioskEnabled: localStorage.getItem('sys_kioskEnabled') !== 'false', // По умолчанию стенд работает
+  enrollEnabled: localStorage.getItem('sys_enrollEnabled') !== 'false', // По умолчанию включено
+  keyboardEnabled: localStorage.getItem('sys_keyboardEnabled') !== 'false', // По умолчанию включено
+  idleTimeoutMinutes: parseInt(localStorage.getItem('sys_idleTimeout')) || 5 // По умолчанию 5 минут
+};
+
+function applySettings() {
+  const activeEl = document.getElementById('enroll-active');
+  const disabledEl = document.getElementById('enroll-disabled');
+  if (activeEl && disabledEl) {
+    activeEl.style.display = sysSettings.enrollEnabled ? 'flex' : 'none';
+    disabledEl.style.display = sysSettings.enrollEnabled ? 'none' : 'flex';
+  }
+  
+  const disabledOverlay = document.getElementById('kiosk-disabled-overlay');
+  if (disabledOverlay) {
+    disabledOverlay.style.display = sysSettings.kioskEnabled ? 'none' : 'flex';
+  }
+  resetIdle();
+}
+
+// СИНХРОНИЗАЦИЯ НАСТРОЕК В РЕАЛЬНОМ ВРЕМЕНИ
+window.addEventListener('storage', () => {
+  sysSettings.kioskEnabled = localStorage.getItem('sys_kioskEnabled') !== 'false';
+  sysSettings.enrollEnabled = localStorage.getItem('sys_enrollEnabled') !== 'false';
+  sysSettings.keyboardEnabled = localStorage.getItem('sys_keyboardEnabled') !== 'false';
+  sysSettings.idleTimeoutMinutes = parseInt(localStorage.getItem('sys_idleTimeout')) || 5;
+  applySettings();
+});
+
+// ТАЙМЕР БЕЗДЕЙСТВИЯ -> ПОЛНАЯ ПЕРЕЗАГРУЗКА
+let idle;
+function resetIdle() { 
+  clearTimeout(idle);
+  const timeoutMs = sysSettings.idleTimeoutMinutes * 60000;
+  idle = setTimeout(() => {
+    const isHome = document.getElementById('page-home').classList.contains('active');
+    const isMenuOpen = document.getElementById('start-screen').classList.contains('active');
+    
+    if (!isHome || isMenuOpen) {
+      window.location.reload();
+    }
+  }, timeoutMs);
+}
+document.addEventListener('click', resetIdle);
+document.addEventListener('touchstart', resetIdle);
+applySettings(); // Применяем настройки сразу при загрузке
+resetIdle();
+
+// ЗАЩИТА КИОСКА: Отключение правого клика, долгого тапа и перетаскивания элементов
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('dragstart', e => e.preventDefault());
+
+// УБИРАЕМ ЭКРАН ЗАГРУЗКИ ЧЕРЕЗ 3.5 СЕКУНДЫ
+setTimeout(() => {
+  const loader = document.getElementById('page-loader');
+  if(loader) loader.classList.add('hidden');
+}, 3500);
+</script>
+</body>
+</html>
